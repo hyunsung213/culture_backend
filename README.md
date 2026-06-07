@@ -60,9 +60,17 @@ DB_DIALECT=postgres
 
 LLM_SERVER_URL=http://localhost:8080
 
+FRONTEND_ORIGINS=http://localhost:3000,http://127.0.0.1:3000
+
 JWT_SECRET=change-this-to-a-long-random-secret
 JWT_EXPIRES_IN_SECONDS=604800
 PASSWORD_RESET_EXPIRES_IN_SECONDS=600
+```
+
+`FRONTEND_ORIGINS`는 CORS에서 허용할 프론트엔드 origin 목록입니다. 쉼표로 여러 개를 넣을 수 있습니다.
+
+```env
+FRONTEND_ORIGINS=http://localhost:3000,https://your-frontend.onrender.com
 ```
 
 ## DB 연결 방법

@@ -12,12 +12,12 @@ import wordRoutes from "./routes/word.routes";
 
 const app = express();
 
-const allowedLocalhostFrontendOrigin = /^https?:\/\/(localhost|127\.0\.0\.1):3\d{3}$/;
+const allowedFrontendOrigins = new Set(env.FRONTEND_ORIGINS);
 
 app.use(
   cors({
     origin: (origin, callback) => {
-      if (!origin || allowedLocalhostFrontendOrigin.test(origin)) {
+      if (!origin || allowedFrontendOrigins.has(origin.replace(/\/+$/, ""))) {
         callback(null, true);
         return;
       }
