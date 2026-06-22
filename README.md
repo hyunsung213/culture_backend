@@ -824,6 +824,45 @@ Authorization: Bearer {accessToken}
 ]
 ```
 
+### `DELETE /api/learning-logs/me`
+
+현재 사용자 기준 학습 기록을 모두 삭제하고 오늘의 단어 진행도를 처음으로 되돌립니다. 삭제 후 `GET /api/words/today`를 다시 호출하면 첫 번째 단어부터 반환됩니다.
+
+요청 header:
+
+```http
+Authorization: Bearer {accessToken}
+```
+
+요청 body는 없습니다.
+
+응답 `200`:
+
+```json
+{
+  "success": true,
+  "deletedCount": 30,
+  "message": "Learning progress has been reset"
+}
+```
+
+프론트 요청 예시:
+
+```ts
+await fetch(`${API_BASE_URL}/api/learning-logs/me`, {
+  method: "DELETE",
+  headers: {
+    Authorization: `Bearer ${accessToken}`
+  }
+});
+
+const todayWordResponse = await fetch(`${API_BASE_URL}/api/words/today`, {
+  headers: {
+    Authorization: `Bearer ${accessToken}`
+  }
+});
+const todayWord = await todayWordResponse.json();
+```
 ## Feedback Server 연동 방식
 
 메인 백엔드는 아래 주소로 분석 요청을 전달합니다.

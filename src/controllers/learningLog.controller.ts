@@ -3,7 +3,8 @@ import { AppError } from "../middlewares/error.middleware";
 import {
   createLearningCompleteLog,
   createLearningStartLog,
-  getMyLearningLogs
+  getMyLearningLogs,
+  resetMyLearningLogs
 } from "../services/learningLog.service";
 
 export const createLearningStartController = async (
@@ -64,6 +65,24 @@ export const getMyLearningLogsController = async (
     }
 
     const result = await getMyLearningLogs(userId);
+    res.json(result);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const resetMyLearningLogsController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const userId = req.user?.id ?? null;
+    if (!userId) {
+      throw new AppError("User context is missing", 401);
+    }
+
+    const result = await resetMyLearningLogs(userId);
     res.json(result);
   } catch (error) {
     next(error);

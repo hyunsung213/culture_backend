@@ -43,3 +43,15 @@ export const getMyLearningLogs = async (userId: string) => {
     order: [["createdAt", "DESC"]]
   });
 };
+
+export const resetMyLearningLogs = async (userId: string) => {
+  const deletedCount = await LearningLog.destroy({
+    where: { userId }
+  });
+
+  return {
+    success: true,
+    deletedCount,
+    message: "Learning progress has been reset"
+  };
+};
