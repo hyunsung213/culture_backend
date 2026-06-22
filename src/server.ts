@@ -31,17 +31,29 @@ const seedIfEmpty = async (): Promise<void> => {
   }
 };
 
-const startServer = async (): Promise<void> => {
+const prepareRuntime = async (): Promise<void> => {
+  initModels();
+  await testDatabaseConnection();
+  await sequelize.sync();
+
+  await ensureMockUser();
+  await seedIfEmpty();
+};
+
+const startServer = (): void => {
+  const server = app.listen(env.PORT, "0.0.0.0", () => {
+    console.log(`Ieung main backend server listening on port ${env.PORT}`);
+  });
+
+  server.on("error", (error) => {
+    console.error("Failed to bind server port:", error);
+    process.exit(1);
+  });
+
   try {
-    initModels();
-    await testDatabaseConnection();
-    await sequelize.sync();
-
-    await ensureMockUser();
-    await seedIfEmpty();
-
-    app.listen(env.PORT, () => {
-      console.log(`Ieung main backend server listening on port ${env.PORT}`);
+    void prepareRuntime().catch((error) => {
+      console.error("Failed to prepare server runtime:", error);
+      process.exit(1);
     });
   } catch (error) {
     console.error("Failed to start server:", error);
@@ -49,4 +61,4 @@ const startServer = async (): Promise<void> => {
   }
 };
 
-void startServer();
+startServer();
