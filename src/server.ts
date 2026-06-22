@@ -41,7 +41,7 @@ const prepareRuntime = async (): Promise<void> => {
 };
 
 const startServer = (): void => {
-  const server = app.listen(env.PORT, "0.0.0.0", () => {
+  const server = app.listen(env.PORT, () => {
     console.log(`Ieung main backend server listening on port ${env.PORT}`);
   });
 
